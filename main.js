@@ -1,8 +1,14 @@
 //const helloWorld = React.createElement('h1', {}, 'Hello world!');
 
-const firstName = 'toto';
-const lastName = 'glandu';
+// const firstName = 'toto';
 
+  function firstName(props, 'toto') {
+        return <h1>Hello<span>{firstName[0].toUpperCase() + firstName.substr(1)}</span> 
+    }
+// const lastName = 'glandu';
+   function lastName(props, 'glandu') {
+        return <span className="red-text">{lastName.toUpperCase()}</span></h1>
+    }
 
 // Solution sans bonus
 const helloWorld = <h1>Hello <span>{firstName[0].toUpperCase() + firstName.substr(1)}</span> <span className="red-text">{lastName.toUpperCase()}</span></h1>;
