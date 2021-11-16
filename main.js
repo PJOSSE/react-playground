@@ -1,65 +1,62 @@
-// Class component
-//class Car extends React.Component {
-//   render() {
-//     return <h2>Hi, I am a Car!</h2>;
-//   }
-// }
+// Correction exo5
 
-const firstName = 'toto';
-const lastName = 'glandu';
+// Si vous reprenez ce code, commentez l'un des deux composants
 
-class FirstName extends React.Component {
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
 
-//     ......bon si je comprend bien, il y a useState et  useEffect. à utiliser. 
-//    l'un useState sert à renvoyer une valeur d’état local et une fonction pour la mettre à jour.
-// const [state, setState] = useState(initialState);
-// Renvoie une valeur d’état local et une fonction pour la mettre à jour.
+  componentDidMount() {
+      // déclenchée au premier rendu uniquement
+      this.timerID = setInterval(
+          () => this.tick(),
+          1000
+        );
+  }
 
-// Pendant le rendu initial, l’état local (state) a la même valeur que celle passée en premier argument (initialState).
+  componentWillUnmount() {
+      // déclenchée au moment ou le composant va être supprimé
+      clearInterval(this.timerID);
+  }
 
-// La fonction setState permet de mettre à jour l’état local. Elle accepte une nouvelle valeur d’état local et planifie un nouveau rendu du composant.
-// Au cours des rendus suivants, la première valeur renvoyée par useState sera toujours celle de l’état local le plus récent, une fois les mises à jour effectuées.
-   
-    
-        /*
-    // Solution avec bonus
-    const formatFirstName = (firstName) => {
-        return firstName[0].toUpperCase() + firstName.substr(1);
-    }
+  tick() {
+      this.setState({
+          date: new Date()
+      })
+  }
 
-    return <span>{formatFirstName(props.text)}</span>
-    */
-    // Solution sans bonus
-    
-    const [state, setState] = useState(initialState);
-    useEffect(() => {
-    alert(`Bonjour {Firstname}`)
-});
-    render() {
-    return <span>{props.text[0].toUpperCase() + props.text.substr(1)}</span>
+  render() {
+    return (
+      <div>
+        <h1>Bonjour, monde !</h1>
+        <h2>Il est {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
 }
-} setState(newState);
 
-class LastName extends React.Component {
-     const [state, setState] = useState(initialState);
-    useEffect(() => {
-    alert(`Bonjour {Firstname}`)
-});
-render() {
-    /*
-    // Solution avec bonus
-    const formatLastName = (lastName) => {
-        return lastName.toUpperCase();
-    }
+function Clock() {
+const [date, setDate] = React.useState(new Date());
+const intervalRef = React.useRef();
 
-    return <span>{formatLastName(props.text)}</span>
-    */
+React.useEffect(() => {
+  tick();
+  // do stuff
+}, []); // Déclenché a CHAQUE rendu => componentWillMount
 
-    // Solution sans bonus
-    return <span className="red-text">{props.text.toUpperCase()}</span>
+const tick = () => {
+  intervalRef.current = setInterval(() => {
+      setDate(new Date());
+    }, 1000);
+};
 
+return (
+  <div>
+    <h1>Bonjour, monde !</h1>
+    <h2>Il est {date.toLocaleTimeString()}.</h2>
+  </div>
+);
 }
-}
-const helloWorld = <h1>Hello <FirstName text={firstName}/> <LastName text={lastName}/></h1>;
-
-ReactDOM.render(helloWorld, document.querySelector('#app'));
+ReactDOM.render(<Clock />, document.getElementById("app"));
