@@ -1,8 +1,14 @@
+// class Car extends React.Component {
+//   render() {
+//     return <h2>Hi, I am a Car!</h2>;
+//   }
+// }
+
 const firstName = 'toto';
 const lastName = 'glandu';
 
-function FirstName(props) {
-
+class FirstName extends React.Component {
+render() {
     /*
     // Solution avec bonus
     const formatFirstName = (firstName) => {
@@ -15,9 +21,9 @@ function FirstName(props) {
     // Solution sans bonus
     return <span>{props.text[0].toUpperCase() + props.text.substr(1)}</span>
 }
-
-function LastName(props) {
-
+}
+class LastName extends React.Component {
+render() {
     /*
     // Solution avec bonus
     const formatLastName = (lastName) => {
@@ -31,7 +37,7 @@ function LastName(props) {
     return <span className="red-text">{props.text.toUpperCase()}</span>
 
 }
-
+}
 const helloWorld = <h1>Hello <FirstName text={firstName}/> <LastName text={lastName}/></h1>;
 
 ReactDOM.render(helloWorld, document.querySelector('#app'));
