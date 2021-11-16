@@ -1,63 +1,104 @@
-function Clock(props) {
-    React.useEffect(() => {
-        tick();
-    }, []);
-    
-    const [date, setDate] = React.useState(new Date());
-    const [textColor, setTextColor] = React.useState("black");
-    const intervalRef = React.useRef();
-    const tick = () => {
-        intervalRef.current = setInterval(() => {
-            setDate(new Date());
-        }, 1000)
-        
-    }
+// Correction basique exo7
 
-    const changeColor = () => {
-        var randomColor = `#${Math.floor(Math.random()*16777215).toString(16)}`; 
-        setTextColor(randomColor);
-    }
-
-    const resetColor = () => {
-        setTextColor('black')
-    }
-
-    const stopClock = (e) => {
-        e.preventDefault();
-        clearInterval(intervalRef.current);
-    }
-
-
-    const restartClock = (e) => {
-        e.preventDefault();
-        tick();
-    }
-    
-
-/*     return (
-        <div>
-            <h1>Hello world</h1>
-            <h2 style={{color: textColor}}>Il est {date.toLocaleTimeString()}.</h2>
-            <button onClick={changeColor}>Changer couleur</button>
-            <button onClick={resetColor}>Réinitialiser couleur</button>
-        </div>
-        ); */
-
-        // Solution Bonus
-
-        return (
-            <div>
-                <h1>Hello world</h1>
-                <h2 style={{color: textColor}}>Il est {date.toLocaleTimeString()}.</h2>
-                <button onClick={stopClock}>Stop</button>
-                <button onClick={restartClock}>Reprendre</button>
-            </div>
-            );
+function UserGreeting(props) {
+  return <h1>Bienvenue !</h1>;
 }
 
-ReactDOM.render(<Clock />, document.querySelector('#app'));
+function GuestGreeting(props) {
+  return <h1>Veuillez vous connecter</h1>;
+}
+function Greeting(props) {
+    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+    const handleLogIn = (e) => {
+        e.preventDefault();
+        setIsLoggedIn(true);
+    }
+
+    const handleLogOut = (e) => {
+        e.preventDefault();
+        setIsLoggedIn(false);
+    }
+
+  return(
+      <React.Fragment>
+          {isLoggedIn ? 
+          <React.Fragment>
+              <UserGreeting />
+              <button onClick={handleLogOut}>Se déconnecter</button>
+          </React.Fragment> : 
+          <React.Fragment>
+              <GuestGreeting />
+              <button onClick={handleLogIn}>Se connecter</button>
+          </React.Fragment> }
+      </React.Fragment>
+  )
+}
+
+ReactDOM.render(
+  <Greeting />,
+  document.querySelector('#app')
+);
+
+
+// ---------------------------------------------------
+// Correction exo7 avec remontée d'état 
+
+function UserGreeting({ toggleIsLoggedIn }) {
+
+const [text, setText] = React.useState('Simon')
+return (
+  <React.Fragment>
+    <h1>Bienvenue !</h1>
+    <button onClick={() => toggleIsLoggedIn(text)}>Se déconnecter</button>
+  </React.Fragment>
+);
+}
+
+function GuestGreeting({ toggleIsLoggedIn }) {
+const [text, setText] = React.useState('Adrien')
+return (
+  <React.Fragment>
+    <h1>Veuillez vous inscrire.</h1>
+    <button onClick={() => toggleIsLoggedIn(text)}>Se connecter</button>
+  </React.Fragment>
+);
+}
+function Greeting() {
+const [isLoggedIn, setIsLoggedIn] = React.useState(false)
+
+
+const toggleIsLoggedIn = (value) => {
+  console.log(value)
+  setIsLoggedIn(!isLoggedIn);
+}
 
 
 
+return(
+  <React.Fragment>
+    {
+    isLoggedIn ?
+    <UserGreeting toggleIsLoggedIn={toggleIsLoggedIn} />
+    :
+    <GuestGreeting toggleIsLoggedIn={toggleIsLoggedIn} />  
+    }
+  </React.Fragment>
+)
 
 
+/*   if(variable === true) {
+  console.log("oui")
+  //do stuff
+} else {
+  console.log("non")
+  // do something else
+}
+
+variable === true ? console.log("oui") : console.log("non") */
+}
+
+ReactDOM.render(
+<Greeting />,
+document.getElementById('app')
+);
