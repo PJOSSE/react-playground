@@ -1,39 +1,41 @@
-function UserGreeting(props) {
-    return <h1>Bienvenue !</h1>;
-  }
-  
-  function GuestGreeting(props) {
-    return <h1>Veuillez vous connecter</h1>;
-  }
-  function Greeting(props) {
-      const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+// Correction exo 8
 
-      const handleLogIn = (e) => {
-          e.preventDefault();
-          setIsLoggedIn(true);
-      }
+const App = (props) => {
+  const [users, setUsers] = React.useState([]);
 
-      const handleLogOut = (e) => {
-          e.preventDefault();
-          setIsLoggedIn(false);
-      }
+  React.useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((data) => setUsers(data));
+  }, []);
 
-    return(
-        <React.Fragment>
-            {isLoggedIn ? 
-            <React.Fragment>
-                <UserGreeting />
-                <button onClick={handleLogOut}>Se déconnecter</button>
-            </React.Fragment> : 
-            <React.Fragment>
-                <GuestGreeting />
-                <button onClick={handleLogIn}>Se connecter</button>
-            </React.Fragment> }
-        </React.Fragment>
-    )
-  }
-  
-  ReactDOM.render(
-    <Greeting />,
-    document.querySelector('#app')
+  return <UserList users={users} />;
+};
+
+const UserList = (props) => {
+  return (
+    <ul>
+      {props.users.map((user) => (
+        <UserItem key={user.id} user={user} />
+      ))}
+    </ul>
   );
+};
+
+const UserItem = ({ user : { name, email, company, website, phone }}) => {
+
+// const UserItem = (props) => {
+//   let { name, email, company, website, phone, address } = props.user
+
+  return (
+    <React.Fragment>
+      <li>{name}</li>
+      <li>{email}</li>
+      <li>{company.name}</li>
+      <li>{phone}</li>
+      <li>{website}</li>
+    </React.Fragment>
+  );
+};
+
+ReactDOM.render(<App />, document.querySelector("#app"));
